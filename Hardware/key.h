@@ -1,3 +1,9 @@
+/*
+ * @Author: luoqi 
+ * @Date: 2019-12-24 22:40:23 
+ * @Last Modified by:   luoqi 
+ * @Last Modified time: 2019-12-24 22:40:23 
+ */
 #ifndef _KEY_H
 #define _KEY_H
 #include "stc12c5a60s2.h"

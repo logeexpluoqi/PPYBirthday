@@ -1,3 +1,9 @@
+/*
+ * @Author: luoqi 
+ * @Date: 2019-12-24 22:38:41 
+ * @Last Modified by: luoqi
+ * @Last Modified time: 2019-12-24 22:41:36
+ */
 #include "stc12c5a60s2.h"
 #include "task.h"
 #include "beep.h"

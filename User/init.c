@@ -1,3 +1,9 @@
+/*
+ * @Author: luoqi 
+ * @Date: 2019-12-24 22:38:38 
+ * @Last Modified by:   luoqi 
+ * @Last Modified time: 2019-12-24 22:38:38 
+ */
 #include "init.h"
 #include "stc12c5a60s2.h"
 #include "delay.h"
