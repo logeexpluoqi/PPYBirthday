@@ -1,8 +1,8 @@
 /*
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:30 
- * @Last Modified by:   luoqi 
- * @Last Modified time: 2019-12-24 22:38:30 
+ * @Last Modified by: luoqi
+ * @Last Modified time: 2020-01-08 01:01:21
  */
 #include "task.h"
 #include "stc12c5a60s2.h"
@@ -11,6 +11,7 @@
 #include "beep.h"
 #include "relay.h"
 #include "timer.h"
+#include "lcd12864.h"
 
 KEY_Value keyVal;
 
@@ -23,7 +24,7 @@ TaskInitTypeDef Tasks[TASK_NUM] =
 	{0,200,200,task_200ms},
 	{0,500,500,task_500ms},
 	{0,1000,1000,task_1s},
-	{0,5000,5000,task_5s},
+	{0,5000,5000,task_5s}
 };
 
 void task_init()
@@ -99,14 +100,19 @@ void task_1s()
 
 	state = ~state;
 	if(state)
-		jk_off_on(JK_ON);
+		;
+		// jk_off_on(JK_ON);
 	else
-        jk_off_on(JK_OFF); 
+		;
+        // jk_off_on(JK_OFF); 
 }
 
 void task_5s()
 {
+	static unsigned char state = 0;
 
+	state = ~state;
+	lcd_bk_off_on(state);
 }
 
 void task_10s()

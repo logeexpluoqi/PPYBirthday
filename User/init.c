@@ -1,8 +1,8 @@
 /*
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:38 
- * @Last Modified by:   luoqi 
- * @Last Modified time: 2019-12-24 22:38:38 
+ * @Last Modified by: luoqi
+ * @Last Modified time: 2020-01-08 01:01:16
  */
 #include "init.h"
 #include "stc12c5a60s2.h"
@@ -11,12 +11,14 @@
 #include "relay.h"
 #include "ds18b20.h"
 #include "task.h"
+#include "lcd12864.h"
 
 void init_fcn()
 {
 	P0M0 = 0xff;
 	P0M1 = 0x00;
 	task_init();
+	lcd_init();
 	bee(BEEP_ON);
     delay_ms(200);
     bee(BEEP_OFF);
