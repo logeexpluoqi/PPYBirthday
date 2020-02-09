@@ -1,0 +1,7 @@
+# ignore files
+#This is keil5 dir:
+/Project 
+
+*.json
+*.swp
+
