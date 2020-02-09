@@ -19,6 +19,7 @@ void init_fcn()
 	P0M1 = 0x00;
 	task_init();
 	lcd_init();
+	lcd_bk_off_on(LCD_ON);
 	bee(BEEP_ON);
     delay_ms(200);
     bee(BEEP_OFF);

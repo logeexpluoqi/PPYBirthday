@@ -111,8 +111,8 @@ void task_5s()
 {
 	static unsigned char state = 0;
 
-	state = ~state;
-	lcd_bk_off_on(state);
+	// state = ~state;
+	// lcd_bk_off_on(state);
 }
 
 void task_10s()

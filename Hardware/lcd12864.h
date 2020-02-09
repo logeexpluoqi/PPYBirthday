@@ -50,6 +50,7 @@ void lcd_bk_off_on(LcdBk state);
 void lcd_set_dot(unsigned char x, unsigned char y);
 void lcd_put_str(unsigned char row, unsigned char col, unsigned char *puts);
 
-void lcd_write(LcdCmd cmd, unsigned char wdata);
+unsigned char lcd_chek_busy(void);
+unsigned char lcd_rw(LcdCmd cmd, unsigned char wdata);
 
 #endif
