@@ -1,7 +1,8 @@
 # ignore files
 #This is keil5 dir:
 /Project 
-
+lcd12864_demo.c
+.gitignore
 *.json
 *.swp
 
