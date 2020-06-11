@@ -46,5 +46,7 @@ void lcd_init(void);
 void lcd_bk_off_on(LcdBk state);
 void lcd_write_data(unsigned char cmd, unsigned char w_data);
 unsigned char lcd_read_data(void);
+void lcd_set_dot(unsigned char x, unsigned char y);
+void lcd_set_graph(unsigned char graph[16][64]);
 
 #endif
