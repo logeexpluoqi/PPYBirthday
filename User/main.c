@@ -22,7 +22,6 @@
  	P2 = 0xff;
     
  	init_fcn();
-     lcd_put_str(0,0,"ª∂”≠π‚¡Ÿ");
 
      while(1)
      {  

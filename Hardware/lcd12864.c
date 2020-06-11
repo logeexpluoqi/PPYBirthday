@@ -2,174 +2,164 @@
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:24 
  * @Last Modified by: luoqi
- * @Last Modified time: 2020-01-08 01:01:25
+ * @Last Modified time: 2020-03-14 22:47:34
  */
 #include "lcd12864.h"
 #include "delay.h"
 
-unsigned char code AC_TABLE[] = {
-    0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,    //第一行汉字位置  
-    0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,    //第二行汉字位置  
-    0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,    //第三行汉字位置 
-    0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,    //第四行汉字位置 
-};
-
 void lcd_init()
 {
-    lcd_bk_off_on(LCD_ON);
-    lcd_rw(LCD_WrCmd, 0x30);
-    lcd_rw(LCD_WrCmd, 0x0c);
-    lcd_rw(LCD_WrCmd, 0x01);
-    lcd_rw(LCD_WrCmd, 0x06);
+
+    lcd_write_data(LCD_WRITE_CMD, 0x02);
+    lcd_write_data(LCD_WRITE_CMD, 0x06);
+    lcd_write_data(LCD_WRITE_CMD, 0x36);
 }
 
 void lcd_clear()
 {
+    lcd_write_data(LCD_WRITE_CMD, 0x30);
+    lcd_write_data(LCD_WRITE_CMD, 0x01);
+}
+
+void lcd_write_byte(unsigned char w_data)
+{
     unsigned char i;
 
-    lcd_rw(LCD_WrCmd, 0x30);
-    lcd_rw(LCD_WrCmd, 0x80);
-    for(i=0; i<64; i++)
+    lcd_clk = 0;
+    for (i = 0; i < 8; i++)
     {
-        lcd_rw(LCD_WrData, 0x20);
+        lcd_sda_out = ((w_data & 0x80) == 0x80);
+        lcd_clk = 1;
+        w_data = w_data << 1;
+        lcd_clk = 0;
     }
+}
+
+unsigned char lcd_read_byte()
+{
+    unsigned char i;
+    unsigned char high_four_bit = 0;
+    unsigned char low_four_bit = 0;
+
+    for (i = 0; i < 16; i++)
+    {
+        lcd_clk = 0;
+        lcd_clk = 1;
+        if (i < 8)
+        {
+            high_four_bit = (lcd_sda_in == 1);
+            high_four_bit = high_four_bit << 1;
+        }
+        else
+        {
+            low_four_bit = (lcd_sda_in == 1);
+            low_four_bit = low_four_bit << 1;
+        }
+        lcd_clk = 0;
+    }
+    return (high_four_bit | low_four_bit);
+}
+
+void lcd_check_busy()
+{
+    lcd_cs = 1;
+    do
+    {
+        lcd_write_byte(LCD_READ_STATE);
+    } while (lcd_read_byte() == 0x80);
+    lcd_cs = 0;
 }
 
 void lcd_bk_off_on(LcdBk state)
 {
-    LCD_BK = state;
+    if (state == LCD_ON)
+    {
+        lcd_bk = 0;
+    }
+    else
+    {
+        lcd_bk = 1;
+    }
+}
+
+unsigned char lcd_read_data()
+{
+    unsigned char rdata;
+    lcd_check_busy();
+    lcd_cs = 1;
+    lcd_write_byte(LCD_READ_DATA);
+    rdata = lcd_read_byte();
+    lcd_cs = 0;
+    return rdata;
+}
+
+void lcd_write_data(unsigned char cmd, unsigned char w_data)
+{
+    unsigned char i;
+    unsigned char high_four_bit = (w_data & 0xf0);
+    unsigned char low_four_bit = ((w_data << 4) & 0xf0);
+
+    lcd_check_busy();
+    lcd_cs = 1;
+    for (i = 0; i < 24; i++)
+    {
+        lcd_clk = 0;
+        if (i < 8)
+        {
+            lcd_sda_out = ((cmd & 0x80) == 0x80);
+            cmd = cmd << 1;
+        }
+        else if (i >= 8 && i < 15)
+        {
+            lcd_sda_out = ((high_four_bit & 0x80) == 0x80);
+            high_four_bit = high_four_bit << 1;
+        }
+        else
+        {
+            lcd_sda_out = ((low_four_bit & 0x80) == 0x80);
+            low_four_bit = low_four_bit << 1;
+        }
+        lcd_clk = 1;
+    }
+    lcd_cs = 0;
+    lcd_sda_out = 0;
+    lcd_clk = 0;
 }
 
 void lcd_set_dot(unsigned char x, unsigned char y)
 {
+    unsigned char x_addr = x >> 4;
 
-}
-
-void lcd_put_str(unsigned char row, unsigned char col, unsigned char *puts)
-{
-    lcd_rw(LCD_WrCmd, 0x30);     
-    lcd_rw(LCD_WrCmd, AC_TABLE[8*row+col]);   
-    while(*puts != '\0')      
+    x = x % 16;
+    lcd_write_data(LCD_WRITE_CMD, 0x36);
+    lcd_write_data(LCD_WRITE_CMD, 0x80 | y);
+    lcd_write_data(LCD_WRITE_CMD, 0x80 | x_addr);
+    if (x < 8)
     {
-       if(col==8)           
-       {            
-           col='0';
-           row++;
-       }
-       if(row==4) row='0';     
-       lcd_rw(LCD_WrCmd, AC_TABLE[8*row+col]);
-       lcd_rw(LCD_WrData, *puts);      
-       puts++;
-       lcd_rw(LCD_WrData, *puts);
-       puts++;
-       col++;
-    }
-}
-
-unsigned char lcd_chek_busy()
-{
-    unsigned char i;
-    unsigned char data_h_half;
-    unsigned char data_l_half; 
-
-    unsigned char cmd = LCD_RdState;
-
-    LCD_clk = 0;
-    LCD_cs  = 1;
-    for(i=0; i<24; i++)
-    {
-        if(i<8)
-        {
-            LCD_sdi = ((cmd & 0x80) == 0x80);
-            cmd = cmd << 1;
-            LCD_clk = 1;
-            delay_us(1);
-            LCD_clk = 0;
-        }
-        if(i>=8 && i<16)
-        {
-            LCD_clk = 1;
-            delay_us(1);
-            LCD_clk = 0;
-            data_h_half = LCD_sdi;
-            data_h_half = data_h_half << 1;
-        }
-        else
-        {
-            LCD_clk = 1;
-            delay_us(1);
-            LCD_clk = 0;
-            data_l_half = LCD_sdi;
-            data_l_half = data_l_half << 1;
-        }
-    }
-    LCD_cs = 0;
-
-    if(((data_h_half & 0xf0) | (data_l_half & 0x0f)) & 0x20 == 0x20)
-    {
-        return 1;
+        lcd_write_data(LCD_WRITE_DATA, (0x01 >> x));
+        lcd_write_data(LCD_WRITE_DATA, 0x00);
     }
     else
     {
-        return 0;
+        lcd_write_data(LCD_WRITE_DATA, 0x00);
+        lcd_write_data(LCD_WRITE_DATA, (0x01 >> (x + 7)));
     }
 }
 
-unsigned char lcd_rw(LcdCmd cmd, unsigned char wdata)
+void lcd_set_graph(unsigned char graph[16][64])
 {
-    unsigned char i;
-    unsigned char data_h_half;
-    unsigned char data_l_half; 
+    unsigned char i, j;
 
-    data_h_half = wdata & 0xf0;
-    data_l_half = (wdata<<4) & 0xf0;
-
-    if(lcd_chek_busy())
+    lcd_write_data(LCD_WRITE_CMD, 0x36);
+    for (j = 0; j < 64; j++)
     {
-        return 1;
-    }
-    else
-    {
-        LCD_clk = 0;
-        LCD_cs  = 1;
-        for(i=0; i<24; i++)
+        lcd_write_data(LCD_WRITE_CMD, (0x80 | j));
+        for (i = 0; i < 16; i++)
         {
-            if(i<8)
-            {
-                LCD_sdi = ((cmd & 0x80) == 0x80);
-                cmd = cmd << 1;
-                LCD_clk = 1;
-                delay_us(1);
-                LCD_clk = 0;
-            }
-            if(i>=8 && i<16)
-            {
-                if(cmd != LCD_RdState || cmd != LCD_RdData)
-                {
-                    LCD_sdi = ((data_h_half & 0x80) == 0x80);
-                }
-                LCD_clk = 1;
-                delay_us(1);
-                LCD_clk = 0;
-
-                data_h_half = LCD_sdi;
-                data_h_half = data_h_half << 1;
-            }
-            else
-            {
-                if(cmd != LCD_RdState || cmd != LCD_RdData)
-                {
-                    LCD_sdi = ((data_l_half & 0x80) == 0x80); 
-                }
-                LCD_clk = 1;
-                delay_us(1);
-                LCD_clk = 0;
-                data_l_half = LCD_sdi;
-                data_l_half = data_l_half << 1;
-            }
+            lcd_write_data(LCD_WRITE_CMD, (0x80 | (i >> 2)));
+            lcd_write_data(LCD_WRITE_DATA, graph[i][j]);
+            lcd_write_data(LCD_WRITE_DATA, graph[i + 1][j]);
         }
-        LCD_cs = 0;
-        return ((data_h_half & 0xf0) | (data_l_half & 0x0f));
     }
 }
 
