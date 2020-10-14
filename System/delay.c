@@ -9,7 +9,7 @@
 
 #include<intrins.h>
 
-unsigned int delayMsCnt;
+unsigned int delay_ms_cnt;
 
 void delay_us(unsigned int us)
 {
@@ -28,7 +28,7 @@ void delay_us(unsigned int us)
 
 void delay_ms(unsigned int ms)
 {
-	delayMsCnt = ms;
-	while(delayMsCnt);
+	delay_ms_cnt = ms;
+	while(delay_ms_cnt);
 }
 
