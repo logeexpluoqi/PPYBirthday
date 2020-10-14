@@ -1,15 +1,15 @@
 /*
  * @Author: luoqi 
  * @Date: 2019-12-24 22:41:17 
- * @Last Modified by:   luoqi 
- * @Last Modified time: 2019-12-24 22:41:17 
+ * @Last Modified by: luoqi
+ * @Last Modified time: 2020-10-14 23:51:12
  */
 #ifndef _TASK_H
 #define _TASK_H
 
 #define NULL (void*)0
 	
-#define TASK_NUM  11
+#define TASK_NUM  9
 	
 typedef struct TASK_COMPONENTS
 {
@@ -22,6 +22,8 @@ typedef struct TASK_COMPONENTS
 void task_init(void);
 void task_process(void);
 void task_rhythm(void);
+
+void task_display(void);
 
 void task_1ms(void);
 void task_5ms(void);
