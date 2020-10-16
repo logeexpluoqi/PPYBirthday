@@ -27,10 +27,14 @@ void timer0_int() interrupt 1 // 1 ms interrupt
 {
     TL0 = 0x20;
     TH0 = 0xd1;
-    delay_ms_cnt --;
     if(delay_ms_cnt == 0)
     {
         delay_ms_cnt = 0;
     }
+    else
+    {
+        delay_ms_cnt --;    
+    }
+    
     task_rhythm();
 }

@@ -9,27 +9,30 @@
 
 Display displayer;
 
+unsigned char disp_cache[1024] = {0};
+
 void displayer_init()
 {
-    unsigned char i, j;
+    unsigned int i;
     
     lcd_init();
 	lcd_bk_off_on(LCD_ON);
 
-    for(i = 0; i < 16; i++)
+    displayer.IsRefresh = 0;
+    for(i = 0; i < 1024; i++)
     {
-        for(j = 0; j < 64; j++)
-        {
-            displayer.display_layer1[j][i] = 0x00;
-            // displayer.display_layer2[j][i] = 0x00;
-            // displayer.display_layer3[j][i] = 0x00;
-        }
+        displayer.DisplayLayer1[i] = 0;
     }
 }
 
-void displayer_show(Display disp)
+void displayer_show()
 {
     lcd_set_dot(5, 5);
+    if(displayer.IsRefresh)
+    {
+        *disp_cache = *displayer.DisplayLayer1;
+        displayer.IsRefresh = 0;
+    }
 }
 
 void displayer_clear()

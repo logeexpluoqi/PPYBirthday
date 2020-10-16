@@ -25,8 +25,6 @@ void task_rhythm(void);
 
 void task_display(void);
 
-void task_1ms(void);
-void task_5ms(void);
 void task_10ms(void);
 void task_20ms(void);
 void task_50ms(void);
@@ -35,8 +33,5 @@ void task_200ms(void);
 void task_500ms(void);
 void task_1s(void);
 void task_5s(void);
-void task_10s(void);
-
-
 
 #endif

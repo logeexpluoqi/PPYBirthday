@@ -2,7 +2,7 @@
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:30 
  * @Last Modified by: luoqi
- * @Last Modified time: 2020-10-15 01:03:14
+ * @Last Modified time: 2020-10-15 01:20:07
  */
 #include "task.h"
 #include "stc12c5a60s2.h"
@@ -13,7 +13,6 @@
 #include "timer.h"
 #include "displayer.h"
 
-extern Display displayer; // define in file display.c
 KEY_Value keyVal;
 
 TaskInitTypeDef Tasks[TASK_NUM] = 
@@ -67,7 +66,7 @@ void task_process()
 
 void task_display()
 {
-	displayer_show(displayer);
+	displayer_show();
 }
 
 void task_10ms()

@@ -10,13 +10,15 @@
 
 typedef struct DISPLAYER
 {
-    unsigned char display_layer1[64][16];
-    // unsigned char display_layer2[64][16];
-    // unsigned char display_layer3[64][16];
+    unsigned char IsRefresh;
+    /* this screan is 128x64 pixls, a total of 1024 byte */
+    unsigned char DisplayLayer1[1024];
+    // unsigned char display_layer2[1024];
+    // unsigned char display_layer3[1024];
 } Display;
 
 void displayer_init(void);
-void displayer_show(Display disp);
+void displayer_show(void);
 void displayer_close(void);
 void displayer_clear(void);
 

@@ -2,7 +2,7 @@
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:38 
  * @Last Modified by: luoqi
- * @Last Modified time: 2020-10-15 01:00:20
+ * @Last Modified time: 2020-10-15 01:13:30
  */
 #include "init.h"
 #include "beep.h"
@@ -17,9 +17,10 @@ void init_fcn()
 {
 	P0M0 = 0xff;
 	P0M1 = 0x00;
+	jk_off_on(JK_ON);
 	displayer_init();
 	task_init();
-	bee(BEEP_ON);
+	// bee(BEEP_ON);
 	delay_ms(200);
 	bee(BEEP_OFF);
 	jk_off_on(JK_OFF);
