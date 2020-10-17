@@ -9,7 +9,7 @@
 
 Display displayer;
 
-unsigned char disp_cache[1024] = {0};
+unsigned char disp_cache[10] = {0};
 
 void displayer_init()
 {
@@ -19,7 +19,7 @@ void displayer_init()
 	lcd_bk_off_on(LCD_ON);
 
     displayer.IsRefresh = 0;
-    for(i = 0; i < 1024; i++)
+    for(i = 0; i < 10; i++)
     {
         displayer.DisplayLayer1[i] = 0;
     }

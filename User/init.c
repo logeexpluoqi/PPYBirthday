@@ -12,15 +12,14 @@
 #include "relay.h"
 #include "stc12c5a60s2.h"
 #include "task.h"
+#include "displayer.h"
 
 void init_fcn()
 {
 	P0M0 = 0xff;
 	P0M1 = 0x00;
+	displayer_init();
 	task_init();
-	lcd_init();
-	lcd_set_dot(5, 5);
-	lcd_bk_off_on(LCD_ON);
 	bee(BEEP_ON);
 	delay_ms(200);
 	bee(BEEP_OFF);

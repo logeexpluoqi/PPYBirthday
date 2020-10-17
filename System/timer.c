@@ -10,7 +10,7 @@
 #include "beep.h"
 #include "relay.h"
 
-extern unsigned int delayMsCnt;
+extern unsigned int delay_ms_cnt;
 
 void timer0_init()
 {
@@ -27,10 +27,10 @@ void timer0_int() interrupt 1
 {
     TL0 = 0x20;
     TH0 = 0xd1;
-    delayMsCnt --;
-    if(delayMsCnt == 0)
+    delay_ms_cnt --;
+    if(delay_ms_cnt == 0)
     {
-        delayMsCnt = 0;
+        delay_ms_cnt = 0;
     }
     task_rhythm();
 }

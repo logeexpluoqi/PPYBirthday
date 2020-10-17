@@ -23,7 +23,7 @@ void task_init(void);
 void task_process(void);
 void task_rhythm(void);
 
-void task_1ms(void);
+void task_displayer(void);
 void task_5ms(void);
 void task_10ms(void);
 void task_20ms(void);

@@ -12,19 +12,22 @@
 #include "relay.h"
 #include "timer.h"
 #include "lcd12864.h"
+#include "displayer.h"
 
 KEY_Value keyVal;
 
 TaskInitTypeDef Tasks[TASK_NUM] = 
 {
-	{0,10,10,task_10ms},
-	{0,20,20,task_20ms},
-	{0,50,50,task_50ms},
-	{0,100,100,task_100ms},
-	{0,200,200,task_200ms},
-	{0,500,500,task_500ms},
-	{0,1000,1000,task_1s},
-	{0,5000,5000,task_5s}
+	{0, 10,    10,    task_10ms},
+	{0, 20,    20,    task_20ms},
+	{0, 35,    35,    task_displayer},
+	{0, 50,    50,    task_50ms},
+	{0, 100,   100,   task_100ms},
+	{0, 200,   200,   task_200ms},
+	{0, 500,   500,   task_500ms},
+	{0, 1000,  1000,  task_1s},
+	{0, 5000,  5000,  task_5s},
+	{0, 10000, 10000, task_10s}
 };
 
 void task_init()
@@ -63,6 +66,10 @@ void task_process()
 	}
 }
 
+void task_displayer()
+{
+
+}
 
 void task_10ms()
 {
@@ -96,8 +103,6 @@ void task_500ms()
 
 void task_1s()
 {
-	static unsigned char state = 0;
-
 	
 }
 
@@ -106,9 +111,13 @@ void task_5s()
 	static unsigned char state = 0;
 	state = ~state;
 	if(state)
+	{
 		jk_off_on(JK_ON);
+	}
 	else
+	{
         jk_off_on(JK_OFF); 
+	}
 	
 }
 
