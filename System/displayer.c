@@ -16,6 +16,7 @@ void displayer_init()
     unsigned int i;
     
     lcd_init();
+    displayer_clear();
 	lcd_bk_off_on(LCD_ON);
 
     displayer.IsRefresh = 0;
@@ -42,5 +43,5 @@ void displayer_clear()
 
 void displayer_close()
 {
-
+    
 }

@@ -68,7 +68,7 @@ void task_process()
 
 void task_displayer()
 {
-
+	displayer_show();
 }
 
 void task_10ms()
