@@ -98,21 +98,18 @@ void task_1s()
 {
 	static unsigned char state = 0;
 
-	state = ~state;
-	if(state)
-		;
-		// jk_off_on(JK_ON);
-	else
-		;
-        // jk_off_on(JK_OFF); 
+	
 }
 
 void task_5s()
 {
 	static unsigned char state = 0;
-
-	// state = ~state;
-	// lcd_bk_off_on(state);
+	state = ~state;
+	if(state)
+		jk_off_on(JK_ON);
+	else
+        jk_off_on(JK_OFF); 
+	
 }
 
 void task_10s()
