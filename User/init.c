@@ -2,13 +2,12 @@
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:38 
  * @Last Modified by: luoqi
- * @Last Modified time: 2020-01-08 01:01:16
+ * @Last Modified time: 2020-10-15 01:13:30
  */
 #include "init.h"
 #include "beep.h"
 #include "delay.h"
 #include "ds18b20.h"
-#include "lcd12864.h"
 #include "relay.h"
 #include "stc12c5a60s2.h"
 #include "task.h"

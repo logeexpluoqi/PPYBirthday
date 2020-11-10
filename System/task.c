@@ -2,7 +2,7 @@
  * @Author: luoqi 
  * @Date: 2019-12-24 22:38:30 
  * @Last Modified by: luoqi
- * @Last Modified time: 2020-01-08 01:01:21
+ * @Last Modified time: 2020-10-15 01:20:07
  */
 #include "task.h"
 #include "stc12c5a60s2.h"
@@ -103,21 +103,12 @@ void task_500ms()
 
 void task_1s()
 {
-
 }
 
 void task_5s()
 {
 	static unsigned char state = 0;
 	state = ~state;
-	if(state)
-	{
-		jk_off_on(JK_ON);
-	}
-	else
-	{
-        jk_off_on(JK_OFF); 
-	}
 }
 
 void task_10s()
