@@ -103,7 +103,7 @@ void task_500ms()
 
 void task_1s()
 {
-	
+
 }
 
 void task_5s()
@@ -118,7 +118,6 @@ void task_5s()
 	{
         jk_off_on(JK_OFF); 
 	}
-	
 }
 
 void task_10s()
